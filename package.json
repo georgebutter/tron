@@ -1,0 +1,13 @@
+{
+  "name": "Phaser Node Boilerplate",
+  "version": "0.0.1",
+  "description": "A basic setup for a phaser game",
+  "main": "server.js",
+  "keywords": [
+    "Phaser",
+    "Node",
+    "Express"
+  ],
+  "author": "George Butter",
+  "license": "ISC"
+}
