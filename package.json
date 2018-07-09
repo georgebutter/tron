@@ -1,5 +1,5 @@
 {
-  "name": "Phaser Node Boilerplate",
+  "name": "phaser-node-poilerplate",
   "version": "0.0.1",
   "description": "A basic setup for a phaser game",
   "main": "server.js",
