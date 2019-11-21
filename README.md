@@ -12,9 +12,7 @@ Install
 npm install
 ```
 
-Run
+Run local
 ```
-npm start
+npm run dev
 ```
-
-[Read the article](http://georgebutter.com/phaser-node-boilerplate)
