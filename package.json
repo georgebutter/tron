@@ -11,7 +11,12 @@
   "keywords": [
     "Phaser",
     "Node",
-    "Express"
+    "Express",
+    "TypeScript",
+    "Babel",
+    "Webpack",
+    "Boilerplate",
+    "Phaser 3"
   ],
   "author": "George Butter",
   "license": "ISC",
