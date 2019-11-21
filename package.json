@@ -1,11 +1,12 @@
 {
   "name": "phaser-node-poilerplate",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A basic setup for a phaser game",
   "main": "server.js",
+  "private": false,
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/ButsAndCats/phaser-node-boilerplate.git"
+    "type": "git",
+    "url": "https://github.com/ButsAndCats/phaser-node-boilerplate.git"
   },
   "keywords": [
     "Phaser",
@@ -15,6 +16,41 @@
   "author": "George Butter",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "phaser": "^3.20.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^6.6.0",
+    "eslint-config-google": "^0.14.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2",
+    "typescript-tslint-plugin": "^0.3.1",
+    "webpack": "v4.26.1",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-middleware": "^3.5.1",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-hot-middleware": "^2.24.3",
+    "nodemon": "^1.18.9"
+  },
+  "engines": {
+    "node": "10.13.0",
+    "npm": "6.7.0"
+  },
+  "scripts": {
+    "test": "eslint",
+    "start:nodemon": "nodemon --inspect server.js",
+    "dev": "npm run start:nodemon && npm run fed:dev",
+    "start": "node server.js",
+    "fed:dev": "webpack-dev-server --hot",
+    "build": "webpack"
   }
 }
