@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const chalk = require('chalk');
 const env = process.env.NODE_ENV || 'development';
 const port = 3000;
 
@@ -16,4 +16,7 @@ if (env === 'development') {
 
 app.use(express.static('client'));
 
-app.listen(port, () => console.log(`Listening on http://localhost:${port}`));
+app.listen(port, () => {
+  const phaser = `${chalk.bgRed(' ')}${chalk.bgYellow(' ')}${chalk.bgGreen(' ')}${chalk.bgCyan(' ')}`
+  console.log(chalk.white.bgBlack(`${phaser} Phaser Node Bolierplate Listening on http://localhost:${port} `))
+});
