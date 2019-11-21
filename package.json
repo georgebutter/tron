@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "A basic setup for a phaser game",
   "main": "server.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/ButsAndCats/phaser-node-boilerplate.git"
+  },
   "keywords": [
     "Phaser",
     "Node",
@@ -11,6 +15,6 @@
   "author": "George Butter",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.17.1"
   }
 }
