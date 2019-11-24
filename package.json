@@ -1,13 +1,9 @@
 {
-  "name": "phaser-node-poilerplate",
+  "name": "phaser-tron",
   "version": "1.0.0",
-  "description": "A basic setup for a phaser game",
+  "description": "Phaser Tron",
   "main": "server.js",
   "private": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ButsAndCats/phaser-node-boilerplate.git"
-  },
   "keywords": [
     "Phaser",
     "Node",
