@@ -12,7 +12,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   public preload() {
-    console.log('booting');
     this.scene.start('Title');
   }
 }
