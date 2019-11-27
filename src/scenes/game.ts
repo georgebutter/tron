@@ -26,7 +26,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public preload() {
-    this.lines = [
+    this.allLines = [
       {
         coords: [300, 550],
         colour: this.colours.pink,
@@ -73,8 +73,10 @@ export class GameScene extends Phaser.Scene {
     };
   }
 
-  public create(data: any) {
-    this.lines.slice(0, data.players);
+  public create(data: {
+    players: number;
+  }) {
+    this.lines = this.allLines.slice(0, data.players);
     for (const l of this.lines) {
       const { coords, colour } = l;
       l.head = new Phaser.Geom.Rectangle(coords[0], coords[1], 1, 1);
@@ -292,6 +294,7 @@ export class GameScene extends Phaser.Scene {
 export interface GameScene {
   pause: boolean;
   lines: PlayerLine[];
+  allLines: PlayerLine[];
   colours: {
     [key: string]: number;
   };
