@@ -53,6 +53,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
     alias: {
       scenes: path.resolve(__dirname, 'src/scenes/'),
+      'game-objects': path.resolve(__dirname, 'src/game-objects/'),
     }
   },
   optimization: {

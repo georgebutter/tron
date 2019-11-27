@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const chalk = require('chalk');
 const env = process.env.NODE_ENV || 'development';
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 if (env === 'development') {
   const webpack = require('webpack');
