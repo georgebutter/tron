@@ -273,12 +273,12 @@ export class GameScene extends Phaser.Scene {
   }
 
   public killPlayer(line: PlayerLine, i: Phaser.Geom.Point) {
-    // const graphic = this.add.graphics({
-    //   fillStyle: {
-    //     alpha: 1,
-    //     color: this.colours.yellow.number,
-    //   },
-    // });
+    const graphic = this.add.graphics({
+      fillStyle: {
+        alpha: 1,
+        color: this.colours.yellow.number,
+      },
+    });
     const circle = new Phaser.Geom.Circle(i.x, i.y, 10);
     graphic.fillCircleShape(circle);
     // line.tail.push(line.head);
