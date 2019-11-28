@@ -31,7 +31,7 @@ export class TitleScene extends Phaser.Scene {
     this.fourPlayerButton = new GameObjects.Button(this, 100, 250, '4 Players', {
       fill: '#00C48C',
     }, {
-      pointerup: () => this.startGame(3),
+      pointerup: () => this.startGame(4),
     });
     this.add.existing(this.onePlayerButton);
     this.add.existing(this.twoPlayerButton);
