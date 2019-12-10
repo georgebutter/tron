@@ -9,7 +9,8 @@ const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
 export class GameScene extends Phaser.Scene {
   constructor() {
     super(sceneConfig);
-    this.pause = false;
+    this.pause = true;
+    this.allReady = false;
     this.bounds = [];
     this.colours = {
       purple: {
@@ -59,11 +60,15 @@ export class GameScene extends Phaser.Scene {
     this.allLines = [
       {
         coords: [300, 550],
+        defaultCoords: [300, 550],
         colour: this.colours.pink,
         direction: 'n',
+        defaultDirection: 'n',
         alive: true,
+        score: 0,
         tail: [],
         player: 1,
+        ready: false,
         keys: {
           left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
           right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
@@ -71,11 +76,15 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [300, 50],
+        defaultCoords: [300, 50],
         colour: this.colours.purple,
         direction: 's',
+        defaultDirection: 's',
         alive: true,
+        score: 0,
         tail: [],
         player: 2,
+        ready: false,
         keys: {
           left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
           right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
@@ -83,11 +92,15 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [50, 300],
+        defaultCoords: [50, 300],
         colour: this.colours.orange,
         direction: 'e',
+        defaultDirection: 'e',
         alive: true,
+        score: 0,
         tail: [],
         player: 3,
+        ready: false,
         keys: {
           left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE),
           right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO),
@@ -95,11 +108,15 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [550, 300],
-        colour: this.colours.cyan,
+        defaultCoords: [550, 300],
+        colour: this.colours.green,
         direction: 'w',
+        defaultDirection: 'w',
         alive: true,
+        score: 0,
         tail: [],
         player: 4,
+        ready: false,
         keys: {
           left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PLUS),
           right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.MINUS),
@@ -109,26 +126,95 @@ export class GameScene extends Phaser.Scene {
 
   }
 
-  public create(data: {
-    players: number;
-  }) {
+  public create(data: { players: number; }) {
+    this.statusText = this.add.text(300, 270, '', {
+    })
+    .setOrigin(0.5, 0.5)
+    .setDepth(10);
     this.buildPlayers(data.players);
     this.buildBounds();
   }
 
   public update() {
+    const { JustDown } = Phaser.Input.Keyboard;
     if (this.pause) {
+      const readyLines = [];
+      for (const l of this.lines) {
+        if (JustDown(l.keys.left) || JustDown(l.keys.right)) {
+          l.ready = true;
+          l.alive = true;
+          l.tail = [];
+          l.direction = l.defaultDirection;
+        }
+        if (l.ready) {
+          l.readyText.setText('Ready');
+          readyLines.push(l);
+        } else {
+          l.readyText.setText('Not ready');
+        }
+      }
+      if (readyLines.length === this.lines.length) {
+        this.allReady = true;
+        this.pause = false;
+      }
       return;
     }
+
+    // Fires once on match start
+    if (this.allReady) {
+      this.statusText.setText('');
+      this.allReady = false;
+      for (const l of this.lines) {
+        l.ready = false;
+        l.readyText.setText('');
+        if (l.graphics) {
+          l.graphics.destroy();
+        }
+        if (l.deathGraphics) {
+          l.deathGraphics.destroy();
+        }
+        this.createHead(l);
+      }
+    }
+
+    const aliveLines = [];
+
     for (const l of this.lines) {
       if (l.alive) {
-        if (Phaser.Input.Keyboard.JustDown(l.keys.left)) {
+        if (JustDown(l.keys.left)) {
           this.turnLeft(l);
-        } else if (Phaser.Input.Keyboard.JustDown(l.keys.right)) {
+        } else if (JustDown(l.keys.right)) {
           this.turnRight(l);
         }
         this.growRect(l);
         l.graphics.fillRectShape(l.head);
+        aliveLines.push(l);
+      }
+    }
+    if (this.lines.length > 1) {
+      if (aliveLines.length === 1) {
+        const winner = aliveLines[0];
+        winner.score += 1;
+        winner.text.setText(`Player ${winner.player} - ${winner.score}`);
+        this.statusText.setText(`Player ${winner.player} wins`).setStyle({
+          fill: winner.colour.string,
+          fontSize: '25px',
+          shadow: {
+            color: this.colours.grey.string,
+            blur: '5px',
+          },
+        });
+        this.pause = true;
+      } else if (aliveLines.length === 0) {
+        this.statusText.setText(`Draw!`).setStyle({
+          fill: this.colours.yellow.string,
+          fontSize: '25px',
+          shadow: {
+            color: this.colours.grey.string,
+            blur: '5px',
+          },
+        });
+        this.pause = true;
       }
     }
     this.checkCollisions();
@@ -138,19 +224,30 @@ export class GameScene extends Phaser.Scene {
     this.lines = this.allLines.slice(0, players);
 
     for (const l of this.lines) {
-      const { coords, colour } = l;
-      l.head = new Phaser.Geom.Rectangle(coords[0], coords[1], 1, 1);
-      this.add.text(650, (50 * l.player), `Player ${l.player}`, {
+      const { colour } = l;
+      l.text = this.add.text(650, (50 * l.player), `Player ${l.player} - ${l.score}`, {
         fill: colour.string,
+        fontSize: '25px',
       });
-      l.graphics = this.add.graphics({
-        fillStyle: {
-          alpha: 1,
-          color: colour.number,
-        },
-      });
-      l.graphics.fillRectShape(l.head);
+      l.readyText = this.add.text(300, (270 + (30 * l.player)), '', {
+        fill: colour.string,
+        fontSize: '25px',
+      })
+      .setOrigin(0.5, 0.5)
+      .setDepth(10);
     }
+  }
+
+  public createHead(line: PlayerLine) {
+    const { coords, colour } = line;
+    line.head = new Phaser.Geom.Rectangle(coords[0], coords[1], 1, 1);
+    line.graphics = this.add.graphics({
+      fillStyle: {
+        alpha: 1,
+        color: colour.number,
+      },
+    });
+    line.graphics.fillRectShape(line.head);
   }
 
   public buildBounds() {
@@ -210,19 +307,19 @@ export class GameScene extends Phaser.Scene {
   }
 
   public turnLeft(line: PlayerLine) {
-    const { graphics, direction, head } = line;
+    const { direction, head } = line;
     line.tail.push(head);
     line.head = this.getLeftCoords(line);
     line.direction = this.getLeftDirection(direction);
-    graphics.strokeRectShape(line.head);
+    line.graphics.strokeRectShape(line.head);
   }
 
   public turnRight(line: PlayerLine) {
-    const { graphics, direction, head } = line;
+    const { direction, head } = line;
     line.tail.push(head);
     line.head = this.getRightCoords(line);
     line.direction = this.getRightDirection(direction);
-    graphics.strokeRectShape(line.head);
+    line.graphics.strokeRectShape(line.head);
   }
 
   public getRightCoords(line: PlayerLine) {
@@ -273,18 +370,20 @@ export class GameScene extends Phaser.Scene {
   }
 
   public killPlayer(line: PlayerLine, i: Phaser.Geom.Point) {
-    const graphic = this.add.graphics({
+    line.deathGraphics = this.add.graphics({
       fillStyle: {
         alpha: 1,
         color: this.colours.yellow.number,
       },
     });
-    const circle = new Phaser.Geom.Circle(i.x, i.y, 10);
-    graphic.fillCircleShape(circle);
-    // line.tail.push(line.head);
-    // for (const tail of line.tail) {
-    //   graphic.fillRectShape(tail);
-    // }
+    const circle = new Phaser.Geom.Circle(i.x, i.y, 3);
+    line.deathGraphics.fillCircleShape(circle);
+
+    for (const tail of line.tail) {
+      line.deathGraphics.fillRectShape(tail);
+    }
+    line.deathGraphics.fillRectShape(line.head);
+
     line.alive = false;
   }
 
@@ -334,6 +433,7 @@ export class GameScene extends Phaser.Scene {
 
 export interface GameScene {
   pause: boolean;
+  allReady: boolean;
   lines: PlayerLine[];
   allLines: PlayerLine[];
   colours: {
@@ -343,19 +443,27 @@ export interface GameScene {
     };
   };
   bounds: Phaser.Geom.Rectangle[];
+  statusText: Phaser.GameObjects.Text;
 }
 
 export interface PlayerLine {
   player: number;
   coords: number[];
+  defaultCoords: number[];
   head?: Phaser.Geom.Rectangle;
   graphics?: Phaser.GameObjects.Graphics;
+  deathGraphics?: Phaser.GameObjects.Graphics;
+  text?: Phaser.GameObjects.Text;
+  readyText?: Phaser.GameObjects.Text;
   colour: {
     number: number;
     string: string;
   };
   direction: 'n' | 'e' | 's' | 'w';
+  defaultDirection: 'n' | 'e' | 's' | 'w';
+  ready: boolean;
   alive: boolean;
+  score: number;
   tail: Phaser.Geom.Rectangle[];
   keys: {
     left: Phaser.Input.Keyboard.Key;
