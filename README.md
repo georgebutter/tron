@@ -1,6 +1,6 @@
-# Tron
+[![Heroku](https://heroku-badge.herokuapp.com/?app=phaser-tron)]
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=phaser-tron)
+# Tron
 
 ### Demo
 
