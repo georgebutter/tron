@@ -1,18 +1,20 @@
 
-# Phaser Node boilerplate
+# Tron
 
-Clone
-```
-git clone git@github.com:ButsAndCats/phaser-node-boilerplate.git
-```
+### Demo
 
-Install
+https://phaser-tron.herokuapp.com/
 
-```
-npm install
-```
+### Development
 
-Run local
-```
-npm run dev
-```
+Build using
+ - Phaser 3
+ - TypeScript
+ - Node
+ - Express
+ - Sockets.io
+
+
+Built using the [Phaser node boilerplate][fa18fe57]
+
+  [fa18fe57]: https://github.com/ButsAndCats/phaser-node-boilerplate "Phaser node boilerplate"

@@ -18,5 +18,7 @@ app.use(express.static('client'));
 
 app.listen(port, () => {
   const phaser = `${chalk.bgRed(' ')}${chalk.bgYellow(' ')}${chalk.bgGreen(' ')}${chalk.bgCyan(' ')}`
-  console.log(chalk.white.bgBlack(`${phaser} Phaser Tron Listening on http://localhost:${port} `))
+  const name = process.env.npm_package_name;
+  const version = process.env.npm_package_version;
+  console.log(chalk.white.bgBlack(`${phaser} ${name} ${version} http://localhost:${port} `))
 });

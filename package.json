@@ -53,6 +53,7 @@
     "dev": "npm run start:nodemon && npm run fed:dev",
     "start": "node server.js",
     "fed:dev": "webpack-dev-server --hot",
-    "build": "webpack"
+    "build": "webpack",
+    "build:prod": "webpack --mode=production"
   }
 }
