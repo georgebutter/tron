@@ -36,7 +36,7 @@
     "tslint": "^5.20.1",
     "typescript": "^3.7.2",
     "typescript-tslint-plugin": "^0.3.1",
-    "webpack": "v4.26.1",
+    "webpack": "^4.26.1",
     "webpack-cli": "^3.3.5",
     "webpack-dev-middleware": "^3.5.1",
     "webpack-dev-server": "^3.7.2",
@@ -53,6 +53,7 @@
     "dev": "npm run start:nodemon && npm run fed:dev",
     "start": "node server.js",
     "fed:dev": "webpack-dev-server --hot",
-    "build": "webpack"
+    "build": "webpack",
+    "log": "heroku logs --tail -a=phaser-tron"
   }
 }
