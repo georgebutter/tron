@@ -2,16 +2,14 @@
 
 ### Demo
 
-https://phaser-tron.herokuapp.com/
+https://tron-14d6e.web.app/
 
 ### Development
 
-Build using
+Built using
  - Phaser 3
  - TypeScript
- - Node
- - Express
- - Sockets.io
+ - Firebase
 
 
 Built using the [Phaser node boilerplate][fa18fe57]

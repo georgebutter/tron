@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./client/scripts/",
+    "outDir": "./public/scripts/",
     "removeComments": true,
     "noImplicitAny": true,
     "module": "es6",
@@ -8,13 +8,6 @@
     "target": "es5",
     "allowJs": true,
     "sourceMap": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": false,
-        "ignoreDefinitionFiles": false,
-      }
-    ],
     "baseUrl": "./",
     "paths": {
       "scenes": ["src/scenes"],
@@ -23,5 +16,5 @@
   },
   "include": [
     "**/*.ts"
-  ],
+  ]
 }
