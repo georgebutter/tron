@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 import Scenes from 'scenes';
 
 const config: Phaser.Types.Core.GameConfig = {
-  title: 'Phaser Node Boilerplate',
+  title: 'Tron',
   type: Phaser.AUTO,
   scale: {
     width: window.innerWidth,

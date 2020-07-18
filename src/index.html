@@ -12,6 +12,28 @@
       overflow: hidden !important;
     }
   </style>
-  <main id="game">
-  </main>
+  <main id="game"></main>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCw7oemz_S59I5-zvvvrzjrOwcb9CI4mLc",
+      authDomain: "tron-14d6e.firebaseapp.com",
+      databaseURL: "https://tron-14d6e.firebaseio.com",
+      projectId: "tron-14d6e",
+      storageBucket: "tron-14d6e.appspot.com",
+      messagingSenderId: "19641235171",
+      appId: "1:19641235171:web:50842aa7f2e34a2368f7d6",
+      measurementId: "G-TZX2F0GMD6"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </body>
