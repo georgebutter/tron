@@ -119,7 +119,13 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // Fires once on match start
+    
+    /**    
+     * Once all players set themselves to ready, reset the previous game.
+     * Clear the status text
+     * Change each player status to not readyText
+     * Remove previous graphics
+     */     
     if (this.allReady) {
       this.statusText.setText('');
       this.allReady = false;
@@ -229,31 +235,31 @@ export class GameScene extends Phaser.Scene {
   public checkCollisions() {
     for (const l of this.lines) {
       if (l.alive) {
-        /*
-        Check whether the line has colided with one of the walls
-        */
+        /**
+         * Check whether the line has colided with one of the walls
+         */
         for (const b of this.bounds) {
           const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, b);
           if (intersection.length) {
             this.handleDeath(l, intersection);
           }
         }
-        /*
-        Check whether it has hit it's self or another player
-        */
+        /**
+         * Check whether it has hit it's self or another player
+         */
         for (const j of this.lines) {
-          /*
-          Check whether it has hit the head of another player
-          */
+          /**
+           * Check whether it has hit the head of another player
+           **/
           if (l.player !== j.player) {
             const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, j.head);
             if (intersection.length) {
               this.handleDeath(l, intersection);
             }
           }
-          /*
-          Check whether it has hit it's own tail or another players tail
-          */
+          /**
+           * Check whether it has hit it's own tail or another players tail
+           */
           for (const t of j.tail) {
             const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, t);
             if (intersection.length) {

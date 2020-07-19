@@ -15,6 +15,9 @@ const config: Phaser.Types.Core.GameConfig = {
 
 export const game = new Phaser.Game(config);
 
+/**
+ * Set the canvas to fill the browser window if the screen size changes.
+ */ 
 window.addEventListener('resize', () => {
   game.scale.setGameSize(window.innerWidth, window.innerHeight);
 });
