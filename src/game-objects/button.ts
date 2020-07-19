@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { colours } from '../constants';
 
 export class Button extends Phaser.GameObjects.Text {
   constructor(
@@ -41,7 +42,7 @@ export class Button extends Phaser.GameObjects.Text {
 
   public buttonOver() {
     this.setStyle({
-      fill: '#FFCF5C',
+      fill: colours.yellow.string,
     });
   }
 
@@ -51,7 +52,7 @@ export class Button extends Phaser.GameObjects.Text {
 
   public buttonDown() {
     this.setStyle({
-      fill: '#0084F4',
+      fill: colours.cyan.string,
     });
   }
 }

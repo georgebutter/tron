@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { colours } from '../constants';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -12,48 +13,6 @@ export class GameScene extends Phaser.Scene {
     this.pause = true;
     this.allReady = false;
     this.bounds = [];
-    this.colours = {
-      purple: {
-        number: 0xBE52F2,
-        string: '#BE52F2',
-      },
-      blue: {
-        number: 0x6979F8,
-        string: '#6979F8',
-      },
-      yellow: {
-        number: 0xFFCF5C,
-        string: '#FFCF5C',
-      },
-      orange: {
-        number: 0xFFA26B,
-        string: '#FFA26B',
-      },
-      cyan: {
-        number: 0x0084F4,
-        string: '#0084F4',
-      },
-      green: {
-        number: 0x00C48C,
-        string: '#00C48C',
-      },
-      pink: {
-        number: 0xFF647C,
-        string: '#FF647C',
-      },
-      black: {
-        number: 0x1A051D,
-        string: '#1A051D',
-      },
-      grey: {
-        number: 0x3F3356,
-        string: '#3F3356',
-      },
-      white: {
-        number: 0xffffff,
-        string: '#ffffff',
-      },
-    };
   }
 
   public preload() {
@@ -61,7 +20,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [300, 550],
         defaultCoords: [300, 550],
-        colour: this.colours.pink,
+        colour: colours.pink,
         direction: 'n',
         defaultDirection: 'n',
         alive: true,
@@ -77,7 +36,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [300, 50],
         defaultCoords: [300, 50],
-        colour: this.colours.purple,
+        colour: colours.purple,
         direction: 's',
         defaultDirection: 's',
         alive: true,
@@ -93,7 +52,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [50, 300],
         defaultCoords: [50, 300],
-        colour: this.colours.orange,
+        colour: colours.orange,
         direction: 'e',
         defaultDirection: 'e',
         alive: true,
@@ -109,7 +68,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [550, 300],
         defaultCoords: [550, 300],
-        colour: this.colours.green,
+        colour: colours.green,
         direction: 'w',
         defaultDirection: 'w',
         alive: true,
@@ -200,17 +159,17 @@ export class GameScene extends Phaser.Scene {
           fill: winner.colour.string,
           fontSize: '25px',
           shadow: {
-            color: this.colours.grey.string,
+            color: colours.grey.string,
             blur: '5px',
           },
         });
         this.pause = true;
       } else if (aliveLines.length === 0) {
         this.statusText.setText(`Draw!`).setStyle({
-          fill: this.colours.yellow.string,
+          fill: colours.yellow.string,
           fontSize: '25px',
           shadow: {
-            color: this.colours.grey.string,
+            color: colours.grey.string,
             blur: '5px',
           },
         });
@@ -260,7 +219,7 @@ export class GameScene extends Phaser.Scene {
       const borders = this.add.graphics({
         fillStyle: {
           alpha: 1,
-          color: this.colours.black.number,
+          color: colours.black.number,
         },
       });
       borders.fillRectShape(b);
