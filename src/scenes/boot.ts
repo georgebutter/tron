@@ -15,6 +15,6 @@ export class BootScene extends Phaser.Scene {
   }
 
   public preload() {
-    this.scene.start('Title');
+    this.scene.start('Menu');
   }
 }
