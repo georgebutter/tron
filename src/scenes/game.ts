@@ -354,9 +354,9 @@ export class GameScene extends Phaser.Scene {
     return map[line.direction](line.head);
   }
 
-  public getLeftDirection(dir: 'n' | 'e' | 's' | 'w'): 'n' | 'e' | 's' | 'w' {
+  public getLeftDirection(dir: Compass): Compass {
     const map: {
-      [key: string]: 'n' | 'e' | 's' | 'w';
+      [key: string]: Compass;
     } = {
       n: 'w',
       e: 'n',
@@ -366,9 +366,9 @@ export class GameScene extends Phaser.Scene {
     return map[dir];
   }
 
-  public getRightDirection(dir: 'n' | 'e' | 's' | 'w'): 'n' | 'e' | 's' | 'w' {
+  public getRightDirection(dir: Compass): Compass {
     const map: {
-      [key: string]: 'n' | 'e' | 's' | 'w';
+      [key: string]: Compass;
     } = {
       n: 'e',
       e: 's',
@@ -379,6 +379,8 @@ export class GameScene extends Phaser.Scene {
   }
 
 }
+
+type Compass = 'n' | 'e' | 's' | 'w'
 
 export interface GameScene {
   pause: boolean;
@@ -408,8 +410,8 @@ export interface PlayerLine {
     number: number;
     string: string;
   };
-  direction: 'n' | 'e' | 's' | 'w';
-  defaultDirection: 'n' | 'e' | 's' | 'w';
+  direction: Compass;
+  defaultDirection: Compass;
   ready: boolean;
   alive: boolean;
   score: number;
