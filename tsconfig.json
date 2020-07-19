@@ -11,7 +11,8 @@
     "baseUrl": "./",
     "paths": {
       "scenes": ["src/scenes"],
-      "game-objects": ["src/game-objects"]
+      "game-objects": ["src/game-objects"],
+      "constants": ["src/constants"]
     }
   },
   "include": [

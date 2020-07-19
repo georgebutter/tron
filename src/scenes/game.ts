@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { colours } from '../constants';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -12,48 +13,6 @@ export class GameScene extends Phaser.Scene {
     this.pause = true;
     this.allReady = false;
     this.bounds = [];
-    this.colours = {
-      purple: {
-        number: 0xBE52F2,
-        string: '#BE52F2',
-      },
-      blue: {
-        number: 0x6979F8,
-        string: '#6979F8',
-      },
-      yellow: {
-        number: 0xFFCF5C,
-        string: '#FFCF5C',
-      },
-      orange: {
-        number: 0xFFA26B,
-        string: '#FFA26B',
-      },
-      cyan: {
-        number: 0x0084F4,
-        string: '#0084F4',
-      },
-      green: {
-        number: 0x00C48C,
-        string: '#00C48C',
-      },
-      pink: {
-        number: 0xFF647C,
-        string: '#FF647C',
-      },
-      black: {
-        number: 0x1A051D,
-        string: '#1A051D',
-      },
-      grey: {
-        number: 0x3F3356,
-        string: '#3F3356',
-      },
-      white: {
-        number: 0xffffff,
-        string: '#ffffff',
-      },
-    };
   }
 
   public preload() {
@@ -61,7 +20,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [300, 550],
         defaultCoords: [300, 550],
-        colour: this.colours.pink,
+        colour: colours.pink,
         direction: 'n',
         defaultDirection: 'n',
         alive: true,
@@ -77,7 +36,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [300, 50],
         defaultCoords: [300, 50],
-        colour: this.colours.purple,
+        colour: colours.purple,
         direction: 's',
         defaultDirection: 's',
         alive: true,
@@ -93,7 +52,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [50, 300],
         defaultCoords: [50, 300],
-        colour: this.colours.orange,
+        colour: colours.orange,
         direction: 'e',
         defaultDirection: 'e',
         alive: true,
@@ -109,7 +68,7 @@ export class GameScene extends Phaser.Scene {
       {
         coords: [550, 300],
         defaultCoords: [550, 300],
-        colour: this.colours.green,
+        colour: colours.green,
         direction: 'w',
         defaultDirection: 'w',
         alive: true,
@@ -127,8 +86,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create(data: { players: number; }) {
-    this.statusText = this.add.text(300, 270, '', {
-    })
+    this.statusText = this.add.text(300, 270, '', {})
     .setOrigin(0.5, 0.5)
     .setDepth(10);
     this.buildPlayers(data.players);
@@ -160,19 +118,21 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // Fires once on match start
+    
+    /**    
+     * Once all players set themselves to ready, reset the previous game.
+     * Clear the status text
+     * Change each player status to not readyText
+     * Remove previous graphics
+     */     
     if (this.allReady) {
       this.statusText.setText('');
       this.allReady = false;
       for (const l of this.lines) {
         l.ready = false;
         l.readyText.setText('');
-        if (l.graphics) {
-          l.graphics.destroy();
-        }
-        if (l.deathGraphics) {
-          l.deathGraphics.destroy();
-        }
+        this.resetGraphics(l.graphics);
+        this.resetGraphics(l.deathGraphics);
         this.createHead(l);
       }
     }
@@ -200,17 +160,17 @@ export class GameScene extends Phaser.Scene {
           fill: winner.colour.string,
           fontSize: '25px',
           shadow: {
-            color: this.colours.grey.string,
+            color: colours.grey.string,
             blur: '5px',
           },
         });
         this.pause = true;
       } else if (aliveLines.length === 0) {
         this.statusText.setText(`Draw!`).setStyle({
-          fill: this.colours.yellow.string,
+          fill: colours.yellow.string,
           fontSize: '25px',
           shadow: {
-            color: this.colours.grey.string,
+            color: colours.grey.string,
             blur: '5px',
           },
         });
@@ -235,18 +195,24 @@ export class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0.5)
       .setDepth(10);
+      l.graphics = this.add.graphics({
+        fillStyle: {
+          alpha: 1,
+          color: colour.number,
+        },
+      });
+      l.deathGraphics = this.add.graphics({
+        fillStyle: {
+          alpha: 1,
+          color: colours.yellow.number,
+        },
+      });
     }
   }
 
   public createHead(line: PlayerLine) {
     const { coords, colour } = line;
     line.head = new Phaser.Geom.Rectangle(coords[0], coords[1], 1, 1);
-    line.graphics = this.add.graphics({
-      fillStyle: {
-        alpha: 1,
-        color: colour.number,
-      },
-    });
     line.graphics.fillRectShape(line.head);
   }
 
@@ -260,7 +226,7 @@ export class GameScene extends Phaser.Scene {
       const borders = this.add.graphics({
         fillStyle: {
           alpha: 1,
-          color: this.colours.black.number,
+          color: colours.black.number,
         },
       });
       borders.fillRectShape(b);
@@ -270,31 +236,31 @@ export class GameScene extends Phaser.Scene {
   public checkCollisions() {
     for (const l of this.lines) {
       if (l.alive) {
-        /*
-        Check whether the line has colided with one of the walls
-        */
+        /**
+         * Check whether the line has colided with one of the walls
+         */
         for (const b of this.bounds) {
           const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, b);
           if (intersection.length) {
             this.handleDeath(l, intersection);
           }
         }
-        /*
-        Check whether it has hit it's self or another player
-        */
+        /**
+         * Check whether it has hit it's self or another player
+         */
         for (const j of this.lines) {
-          /*
-          Check whether it has hit the head of another player
-          */
+          /**
+           * Check whether it has hit the head of another player
+           **/
           if (l.player !== j.player) {
             const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, j.head);
             if (intersection.length) {
               this.handleDeath(l, intersection);
             }
           }
-          /*
-          Check whether it has hit it's own tail or another players tail
-          */
+          /**
+           * Check whether it has hit it's own tail or another players tail
+           */
           for (const t of j.tail) {
             const intersection = Phaser.Geom.Intersects.GetRectangleToRectangle(l.head, t);
             if (intersection.length) {
@@ -324,36 +290,20 @@ export class GameScene extends Phaser.Scene {
 
   public getRightCoords(line: PlayerLine) {
     const map = {
-      n: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x + 2, head.y, 1, 1);
-      },
-      e: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.right, head.y + 2, 1, 1);
-      },
-      s: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x - 2, head.bottom, 1, 1);
-      },
-      w: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x, head.y - 2, 1, 1);
-      },
+      n: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x + 2, head.y, 1, 1),
+      e: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.right, head.y + 2, 1, 1),
+      s: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x - 2, head.bottom, 1, 1),
+      w: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x, head.y - 2, 1, 1),
     };
     return map[line.direction](line.head);
   }
 
   public getLeftCoords(line: PlayerLine) {
     const map = {
-      n: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x - 2, head.y, 1, 1);
-      },
-      e: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.right, head.y - 2, 1, 1);
-      },
-      s: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x + 2, head.bottom, 1, 1);
-      },
-      w: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x, head.y + 2, 1, 1);
-      },
+      n: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x - 2, head.y, 1, 1),
+      e: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.right, head.y - 2, 1, 1),
+      s: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x + 2, head.bottom, 1, 1),
+      w: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x, head.y + 2, 1, 1),
     };
     return map[line.direction](line.head);
   }
@@ -370,12 +320,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   public killPlayer(line: PlayerLine, i: Phaser.Geom.Point) {
-    line.deathGraphics = this.add.graphics({
-      fillStyle: {
-        alpha: 1,
-        color: this.colours.yellow.number,
-      },
-    });
     const circle = new Phaser.Geom.Circle(i.x, i.y, 3);
     line.deathGraphics.fillCircleShape(circle);
 
@@ -383,7 +327,6 @@ export class GameScene extends Phaser.Scene {
       line.deathGraphics.fillRectShape(tail);
     }
     line.deathGraphics.fillRectShape(line.head);
-
     line.alive = false;
   }
 
@@ -405,9 +348,9 @@ export class GameScene extends Phaser.Scene {
     return map[line.direction](line.head);
   }
 
-  public getLeftDirection(dir: 'n' | 'e' | 's' | 'w'): 'n' | 'e' | 's' | 'w' {
+  public getLeftDirection(dir: Compass): Compass {
     const map: {
-      [key: string]: 'n' | 'e' | 's' | 'w';
+      [key: string]: Compass;
     } = {
       n: 'w',
       e: 'n',
@@ -417,9 +360,9 @@ export class GameScene extends Phaser.Scene {
     return map[dir];
   }
 
-  public getRightDirection(dir: 'n' | 'e' | 's' | 'w'): 'n' | 'e' | 's' | 'w' {
+  public getRightDirection(dir: Compass): Compass {
     const map: {
-      [key: string]: 'n' | 'e' | 's' | 'w';
+      [key: string]: Compass;
     } = {
       n: 'e',
       e: 's',
@@ -428,8 +371,18 @@ export class GameScene extends Phaser.Scene {
     };
     return map[dir];
   }
-
+  
+  /**        
+   * Remove the coloured lines from the previous games.
+   */   
+  public resetGraphics(graphics: Phaser.GameObjects.Graphics) {
+    if (graphics) {
+      graphics.clear();
+    }
+  }
 }
+
+type Compass = 'n' | 'e' | 's' | 'w'
 
 export interface GameScene {
   pause: boolean;
@@ -459,8 +412,8 @@ export interface PlayerLine {
     number: number;
     string: string;
   };
-  direction: 'n' | 'e' | 's' | 'w';
-  defaultDirection: 'n' | 'e' | 's' | 'w';
+  direction: Compass;
+  defaultDirection: Compass;
   ready: boolean;
   alive: boolean;
   score: number;
