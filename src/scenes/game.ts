@@ -86,8 +86,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   public create(data: { players: number; }) {
-    this.statusText = this.add.text(300, 270, '', {
-    })
+    this.statusText = this.add.text(300, 270, '', {})
     .setOrigin(0.5, 0.5)
     .setDepth(10);
     this.buildPlayers(data.players);
@@ -132,12 +131,8 @@ export class GameScene extends Phaser.Scene {
       for (const l of this.lines) {
         l.ready = false;
         l.readyText.setText('');
-        if (l.graphics) {
-          l.graphics.destroy();
-        }
-        if (l.deathGraphics) {
-          l.deathGraphics.destroy();
-        }
+        this.resetGraphics(l.graphics);
+        this.resetGraphics(l.deathGraphics);
         this.createHead(l);
       }
     }
@@ -200,18 +195,24 @@ export class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0.5)
       .setDepth(10);
+      l.graphics = this.add.graphics({
+        fillStyle: {
+          alpha: 1,
+          color: colour.number,
+        },
+      });
+      l.deathGraphics = this.add.graphics({
+        fillStyle: {
+          alpha: 1,
+          color: colours.yellow.number,
+        },
+      });
     }
   }
 
   public createHead(line: PlayerLine) {
     const { coords, colour } = line;
     line.head = new Phaser.Geom.Rectangle(coords[0], coords[1], 1, 1);
-    line.graphics = this.add.graphics({
-      fillStyle: {
-        alpha: 1,
-        color: colour.number,
-      },
-    });
     line.graphics.fillRectShape(line.head);
   }
 
@@ -319,12 +320,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   public killPlayer(line: PlayerLine, i: Phaser.Geom.Point) {
-    line.deathGraphics = this.add.graphics({
-      fillStyle: {
-        alpha: 1,
-        color: this.colours.yellow.number,
-      },
-    });
     const circle = new Phaser.Geom.Circle(i.x, i.y, 3);
     line.deathGraphics.fillCircleShape(circle);
 
@@ -332,7 +327,6 @@ export class GameScene extends Phaser.Scene {
       line.deathGraphics.fillRectShape(tail);
     }
     line.deathGraphics.fillRectShape(line.head);
-
     line.alive = false;
   }
 
@@ -377,7 +371,15 @@ export class GameScene extends Phaser.Scene {
     };
     return map[dir];
   }
-
+  
+  /**        
+   * Remove the coloured lines from the previous games.
+   */   
+  public resetGraphics(graphics: Phaser.GameObjects.Graphics) {
+    if (graphics) {
+      graphics.clear();
+    }
+  }
 }
 
 type Compass = 'n' | 'e' | 's' | 'w'
