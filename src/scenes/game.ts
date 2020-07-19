@@ -283,36 +283,20 @@ export class GameScene extends Phaser.Scene {
 
   public getRightCoords(line: PlayerLine) {
     const map = {
-      n: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x + 2, head.y, 1, 1);
-      },
-      e: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.right, head.y + 2, 1, 1);
-      },
-      s: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x - 2, head.bottom, 1, 1);
-      },
-      w: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x, head.y - 2, 1, 1);
-      },
+      n: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x + 2, head.y, 1, 1),
+      e: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.right, head.y + 2, 1, 1),
+      s: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x - 2, head.bottom, 1, 1),
+      w: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x, head.y - 2, 1, 1),
     };
     return map[line.direction](line.head);
   }
 
   public getLeftCoords(line: PlayerLine) {
     const map = {
-      n: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x - 2, head.y, 1, 1);
-      },
-      e: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.right, head.y - 2, 1, 1);
-      },
-      s: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x + 2, head.bottom, 1, 1);
-      },
-      w: (head: Phaser.Geom.Rectangle) => {
-        return new Phaser.Geom.Rectangle(head.x, head.y + 2, 1, 1);
-      },
+      n: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x - 2, head.y, 1, 1),
+      e: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.right, head.y - 2, 1, 1),
+      s: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x + 2, head.bottom, 1, 1),
+      w: (head: Phaser.Geom.Rectangle) => new Phaser.Geom.Rectangle(head.x, head.y + 2, 1, 1),
     };
     return map[line.direction](line.head);
   }
