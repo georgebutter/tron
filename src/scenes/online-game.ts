@@ -22,7 +22,6 @@ export class OnlineGameScene extends Phaser.Scene {
     this.allLines = [
       {
         coords: [300, 550],
-        defaultCoords: [300, 550],
         colour: colours.pink,
         direction: 'n',
         defaultDirection: 'n',
@@ -34,7 +33,6 @@ export class OnlineGameScene extends Phaser.Scene {
       },
       {
         coords: [300, 50],
-        defaultCoords: [300, 50],
         colour: colours.purple,
         direction: 's',
         defaultDirection: 's',
@@ -46,7 +44,6 @@ export class OnlineGameScene extends Phaser.Scene {
       },
       {
         coords: [50, 300],
-        defaultCoords: [50, 300],
         colour: colours.orange,
         direction: 'e',
         defaultDirection: 'e',
@@ -58,7 +55,6 @@ export class OnlineGameScene extends Phaser.Scene {
       },
       {
         coords: [550, 300],
-        defaultCoords: [550, 300],
         colour: colours.green,
         direction: 'w',
         defaultDirection: 'w',
@@ -79,6 +75,7 @@ export class OnlineGameScene extends Phaser.Scene {
         db.collection('games')
           .where('players', 'array-contains', user.uid)
           .onSnapshot((snap) => {
+            console.log(snap)
             if (!snap.empty) {
               this.activeGame = snap.docs[0].data();
               this.player = this.allLines[this.activeGame.players.indexOf(user.uid)]
@@ -418,7 +415,6 @@ export interface OnlineGameScene {
 export interface PlayerLine {
   player: number;
   coords: number[];
-  defaultCoords: number[];
   head?: Phaser.Geom.Rectangle;
   graphics?: Phaser.GameObjects.Graphics;
   deathGraphics?: Phaser.GameObjects.Graphics;

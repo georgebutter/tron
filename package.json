@@ -8,7 +8,10 @@
     "deploy": "firebase deploy",
     "watch": "webpack --watch --mode=development",
     "serve": "firebase serve",
-    "start": "concurrently \"npm:watch\" \"npm:serve\""
+    "functions": "npm run serve --prefix functions",
+    "kill": "killall -9 node && killall java",
+    "emulate": "firebase emulators:start",
+    "start": "concurrently \"npm:emulate\" \"npm:watch\""
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +32,7 @@
   "dependencies": {
     "firebase": "^7.16.1",
     "firebase-admin": "^9.0.0",
+    "firebase-functions": "^3.8.0",
     "phaser": "^3.24.1"
   }
 }

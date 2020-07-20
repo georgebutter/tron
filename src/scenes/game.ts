@@ -19,7 +19,6 @@ export class GameScene extends Phaser.Scene {
     this.allLines = [
       {
         coords: [300, 550],
-        defaultCoords: [300, 550],
         colour: colours.pink,
         direction: 'n',
         defaultDirection: 'n',
@@ -35,7 +34,6 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [300, 50],
-        defaultCoords: [300, 50],
         colour: colours.purple,
         direction: 's',
         defaultDirection: 's',
@@ -51,7 +49,6 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [50, 300],
-        defaultCoords: [50, 300],
         colour: colours.orange,
         direction: 'e',
         defaultDirection: 'e',
@@ -67,7 +64,6 @@ export class GameScene extends Phaser.Scene {
       },
       {
         coords: [550, 300],
-        defaultCoords: [550, 300],
         colour: colours.green,
         direction: 'w',
         defaultDirection: 'w',
@@ -402,7 +398,6 @@ export interface GameScene {
 export interface PlayerLine {
   player: number;
   coords: number[];
-  defaultCoords: number[];
   head?: Phaser.Geom.Rectangle;
   graphics?: Phaser.GameObjects.Graphics;
   deathGraphics?: Phaser.GameObjects.Graphics;
