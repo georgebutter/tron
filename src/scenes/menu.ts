@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import * as GameObjects from 'game-objects';
 import { colours } from '../constants'
+import { Colours } from 'src/types';
 
 const sceneConfig: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -18,7 +19,7 @@ export class MenuScene extends Phaser.Scene {
     const buttons: Array<{
       y: number
       label: string
-      colour: 'pink' | 'purple' | 'orange' | 'green',
+      colour: Colours
       action: () => void
     }> = [
       { 

@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+
 import Scenes from 'scenes';
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -9,6 +10,9 @@ const config: Phaser.Types.Core.GameConfig = {
     height: window.innerHeight,
   },
   scene: Scenes,
+  dom: {
+    createContainer: true
+  },
   parent: 'game',
   backgroundColor: 0x3F3356,
 };

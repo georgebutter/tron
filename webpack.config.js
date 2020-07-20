@@ -2,6 +2,7 @@ const path = require('path');
 const mode = process.env.NODE_ENV || 'development';
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const htmlConfig = {
   title: 'Tron',
@@ -26,6 +27,11 @@ module.exports = {
       ...htmlConfig,
       filename: '../public/index.html',
       template: 'src/index.html',
+    }),
+    new CopyPlugin({
+      patterns: [
+        {from: 'src/assets', to: 'assets'},
+      ],
     }),
   ],
   module: {
